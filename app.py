@@ -157,7 +157,12 @@ def index():
             return redirect("/login")
 
         if request.form.get('submit_button') != 'a':
-            addcarrinho = request.form.get('submit_button')
+            productid = int(request.form.get('submit_button'))
+
+            db.execute("INSERT INTO cart (user_id, product_id) VALUES(:username, :product_id)",
+                                 username=session.get("user_id"),
+                                 product_id=productid)
+
             return redirect("/")
 
     produtos = db.execute("select id, name, desc, price, image from produtos")
