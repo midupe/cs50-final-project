@@ -1,4 +1,5 @@
 import os
+import sys
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, session, request, url_for
 from flask_session import Session
@@ -52,12 +53,6 @@ def apology(message, code=400):
             s = s.replace(old, new)
         return s
     return render_template("apology.html", top=code, bottom=escape(message)), code
-
-
-@app.route("/")
-def index():
-    produtos = db.execute("select id, name, desc, price, image from produtos")
-    return render_template("index.html", produtos=produtos)
 
 @app.route("/about")
 def aboutUs():
@@ -154,6 +149,20 @@ def register():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        if request.form.get('submit_button') != 'a':
+            addcarrinho = request.form.get('submit_button')
+            return redirect("/")
+
+    produtos = db.execute("select id, name, desc, price, image from produtos")
+    
+    return render_template("index.html", produtos=produtos)
 
 @app.route("/logout")
 def logout():
@@ -257,6 +266,10 @@ def adminApagarProdutos():
     produtos = db.execute("select id, name, desc, price, image from produtos")
 
     return render_template("apagarProdutos.html", produtos=produtos)
+
+@app.route("/contacto")
+def contacto():
+    return render_template("contacto.html")
 
 def errorhandler(e):
     """Handle error"""

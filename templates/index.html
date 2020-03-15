@@ -48,11 +48,12 @@
     </div>
   </section>
   <!-- Catálogo -->
+  <form action="/" method="post" enctype=multipart/form-data>
 <div class="album py-5 bg-light" id="catalogo">
     <div class="container">
         <div class="row">
             {% for produto in produtos %}
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card mb-4 box-shadow">
                   <img class="card-img-top" src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 200px;">
                   <div class="card-body">
@@ -60,7 +61,7 @@
                     <p class="card-text">{{ produto.desc }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">🛒 Adicionar ao carrinho</button>
+                        <button class="btn btn-sm btn-outline-secondary" type="submit" name="submit_button" value="{{ produto.id}}">🛒 Adicionar ao carrinho"</button>
                       </div>
                       <small class="text-muted">{{ produto.price }}€</small>
                     </div>
@@ -71,5 +72,5 @@
         </div>
     </div>
 </div>
-
+</form>
 {% endblock %}
