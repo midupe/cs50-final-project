@@ -25,7 +25,13 @@
                 <td><img src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 50px;"></td>
                 <td>{{ produto.name }}</td>
                 <td>{{ produto.price }}</td>
-                <td>{{ produto.quantities }}</td>
+                <td>
+                    <div class="btn-group">
+                        {{ produto.quantities }} &nbsp;
+                        <button class="btn btn-sm btn-outline-secondary" type="submit" name="submit_button-" value="{{ produto.id}}">-</button>
+                        <button class="btn btn-sm btn-outline-secondary" type="submit" name="submit_button+" value="{{ produto.id}}">+</button>
+                      </div>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

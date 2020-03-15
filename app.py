@@ -278,7 +278,37 @@ def contacto():
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
 def cart():
-    produtos = db.execute("Select cart.quantities, produtos.name, produtos.price, produtos.image from cart inner join produtos on cart.product_id = produtos.id where user_id = :user",
+    if request.method == "POST":
+        if request.form.get('submit_button-') is not None:
+            productid = int(request.form.get('submit_button-'))
+            rows = db.execute("select quantities from cart where product_id = :productID and user_id = :userid",
+                                        productID = productid,
+                                        userid=session.get("user_id"))
+            quantities = rows[0]["quantities"]
+            if quantities == 1:
+                db.execute("delete from cart where user_id = :userid and product_id=:product_id",
+                                 userid=session.get("user_id"),
+                                 product_id=productid)
+            else:
+                db.execute("update cart set quantities=:quant where user_id = :userid and product_id=:product_id",
+                                 userid=session.get("user_id"),
+                                 product_id=productid,
+                                 quant= quantities-1)
+        if request.form.get('submit_button+') is not None:
+            productid = int(request.form.get('submit_button+'))
+            rows = db.execute("select quantities from cart where product_id = :productID and user_id = :userid",
+                                        productID = productid,
+                                        userid=session.get("user_id"))
+            quantities = rows[0]["quantities"]
+            
+            db.execute("update cart set quantities=:quant where user_id = :userid and product_id=:product_id",
+                                 userid=session.get("user_id"),
+                                 product_id=productid,
+                                 quant= quantities+1)
+
+        return redirect("/cart")
+
+    produtos = db.execute("Select cart.quantities, produtos.name, produtos.price, produtos.image, produtos.id from cart inner join produtos on cart.product_id = produtos.id where user_id = :user",
                             user = session.get("user_id"))
     return render_template("cart.html", produtos=produtos)
 
