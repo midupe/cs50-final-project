@@ -158,7 +158,6 @@ def index():
 
         if request.form.get('submit_button') != 'a':
             productid = int(request.form.get('submit_button'))
-
             db.execute("INSERT INTO cart (user_id, product_id) VALUES(:username, :product_id)",
                                  username=session.get("user_id"),
                                  product_id=productid)

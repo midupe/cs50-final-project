@@ -6,6 +6,7 @@ Miguel Pereira
 - flask
 - jinja
 - sqlite
+- sql
 - html
 - css
 - bootstrap
