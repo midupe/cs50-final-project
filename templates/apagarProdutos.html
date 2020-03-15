@@ -1,0 +1,53 @@
+{% extends "admin.html" %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block mainAdmin %}
+<form action="/admin/apagarProdutos" method="POST">
+    <table class="table table-striped">
+        <thead>
+            <h2>
+                Apagar Produtos
+            </h2>
+            <tr>
+                <th>Ação</th>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Imagem</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <button class="btn btn-danger" type="submit">Apagar</button>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="text" autofocus class="form-control"  placeholder="ID" name="id">
+                    <div>
+                </td>
+                <td>-</td>       
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        {% for produto in produtos %}
+            <tr>
+                <td>-</td>
+                <td>{{ produto.id }}</td>
+                <td>{{ produto.name }}</td>
+                <td>{{ produto.desc }}</td>
+                <td>{{ produto.price }}</td>
+                <td>
+                    <img class="card-img-top" src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 50px;">
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>
+{% endblock %}

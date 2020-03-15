@@ -1,0 +1,56 @@
+{% extends "admin.html" %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block mainAdmin %}
+    <table class="table table-striped">
+        <thead>
+            <h2>
+                Produtos
+            </h2>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Imagem</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produto in produtos %}
+            <tr>
+                <td>{{ produto.id }}</td>
+                <td>{{ produto.name }}</td>
+                <td>{{ produto.desc }}</td>
+                <td>{{ produto.price }}</td>
+                <td>
+                    <img class="card-img-top" src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 50px;">
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+            <h2>
+                Clientes
+            </h2>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cliente in users %}
+            <tr>
+                <td>{{ cliente.id }}</td>
+                <td>{{ cliente.username }}</td>
+                <td>{{ cliente.mail }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

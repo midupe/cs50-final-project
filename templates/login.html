@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Entrar
+{% endblock %}
+
+{% block main %}
+    <form action="/login" method="post" style="margin-top: 20px;">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Utilizador" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <a href="mailto:geral@velasdecera.pt?subject=Esqueci-me%20da%20senha&body=Mail%20gerado%20automaticamente%20pelo%20site">Esqueceu-se da password?
+        </a>
+        <p<></p>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+    </form>
+{% endblock %}
