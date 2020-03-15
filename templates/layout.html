@@ -38,6 +38,9 @@
                     </ul>
                 {% if session.user_id %}
                     <ul class="navbar-nav ml-auto mt-2">
+                        {% if session.user_type == 'admin' %}
+                        <li class="nav-item"><a class="nav-link" href="/admin" style="color: yellow;">Admin</a></li>
+                        {% endif %}
                         <li class="nav-item"><a class="nav-link" href="/cart">Carrinho</a></li>
                         <li class="nav-item"><a class="nav-link" href="/logout">Sair</a></li>
                     </ul>

@@ -53,6 +53,7 @@ def apology(message, code=400):
         return s
     return render_template("apology.html", top=code, bottom=escape(message)), code
 
+
 @app.route("/")
 def index():
     produtos = db.execute("select id, name, desc, price, image from produtos")
@@ -86,6 +87,7 @@ def login():
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
+        session['user_type'] = rows[0]["tipo"]
 
         rows = db.execute("select * from users where id = :id", id=session.get("user_id"))
         if len(rows) != 1 or rows[0]["tipo"] == "admin":
