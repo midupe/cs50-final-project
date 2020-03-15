@@ -59,6 +59,10 @@ def index():
     produtos = db.execute("select id, name, desc, price, image from produtos")
     return render_template("index.html", produtos=produtos)
 
+@app.route("/about")
+def aboutUs():
+    return render_template("about.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
