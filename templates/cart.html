@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Carrinho
+{% endblock %}
+
+{% block main %}
+<main class="container p-5" >
+<form action="/cart" method="POST" enctype=multipart/form-data>
+    <table class="table table-striped">
+        <thead>
+            <h2>
+                Carrinho
+            </h2>
+            <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produto in produtos %}
+            <tr>
+                <td><img src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 50px;"></td>
+                <td>{{ produto.name }}</td>
+                <td>{{ produto.price }}</td>
+                <td>{{ produto.quantities }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>
+</main>
+{% endblock %}

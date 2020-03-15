@@ -275,6 +275,13 @@ def adminApagarProdutos():
 def contacto():
     return render_template("contacto.html")
 
+@app.route("/cart", methods=["GET", "POST"])
+@login_required
+def cart():
+    produtos = db.execute("Select cart.quantities, produtos.name, produtos.price, produtos.image from cart inner join produtos on cart.product_id = produtos.id where user_id = :user",
+                            user = session.get("user_id"))
+    return render_template("cart.html", produtos=produtos)
+
 def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):
