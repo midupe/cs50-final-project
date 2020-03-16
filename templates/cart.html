@@ -13,10 +13,10 @@
                 Carrinho
             </h2>
             <tr>
-                <th>Imagem</th>
+                <th></th>
                 <th>Nome</th>
-                <th>Preço</th>
                 <th>Quantidade</th>
+                <th>Preço</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +24,6 @@
             <tr>
                 <td><img src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 50px;"></td>
                 <td>{{ produto.name }}</td>
-                <td>{{ produto.price }}</td>
                 <td>
                     <div class="btn-group">
                         {{ produto.quantities }} &nbsp;
@@ -32,10 +31,18 @@
                         <button class="btn btn-sm btn-outline-secondary" type="submit" name="submit_button+" value="{{ produto.id}}">+</button>
                       </div>
                 </td>
+                <td>{{ produto.price }} €</td>
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3"></th>
+                <th>Total: {{ totalcart }} €</th>
+            </tr>
+        </tfoot>
     </table>
+    <a href="/cart/checkout" style="float: right; margin-right: 20px;" class="btn btn-primary my-2">Comprar</a>
 </form>
 </main>
 {% endblock %}

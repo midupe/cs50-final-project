@@ -310,7 +310,17 @@ def cart():
 
     produtos = db.execute("Select cart.quantities, produtos.name, produtos.price, produtos.image, produtos.id from cart inner join produtos on cart.product_id = produtos.id where user_id = :user",
                             user = session.get("user_id"))
-    return render_template("cart.html", produtos=produtos)
+
+    rows0 = db.execute("SELECT SUM(cart.quantities * produtos.price) FROM cart inner join produtos on cart.product_id = produtos.id where user_id = :user", user = session.get("user_id"))
+    totalcart = rows0[0]["SUM(cart.quantities * produtos.price)"]
+
+    return render_template("cart.html", produtos=produtos, totalcart=totalcart)
+
+@app.route("/cart/checkout", methods=["GET", "POST"])
+@login_required
+def checkout():
+    
+    return render_template("checkout.html")
 
 def errorhandler(e):
     """Handle error"""
