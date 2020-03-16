@@ -278,6 +278,7 @@ def contacto():
 @app.route("/cart", methods=["GET", "POST"])
 @login_required
 def cart():
+    userID = session.get("user_id")
     if request.method == "POST":
         if request.form.get('submit_button-') is not None:
             productid = int(request.form.get('submit_button-'))
@@ -298,18 +299,18 @@ def cart():
             productid = int(request.form.get('submit_button+'))
             rows = db.execute("select quantities from cart where product_id = :productID and user_id = :userid",
                                         productID = productid,
-                                        userid=session.get("user_id"))
+                                        userid=userID)
             quantities = rows[0]["quantities"]
             
             db.execute("update cart set quantities=:quant where user_id = :userid and product_id=:product_id",
-                                 userid=session.get("user_id"),
+                                 userid=userID,
                                  product_id=productid,
                                  quant= quantities+1)
 
         return redirect("/cart")
 
     produtos = db.execute("Select cart.quantities, produtos.name, produtos.price, produtos.image, produtos.id from cart inner join produtos on cart.product_id = produtos.id where user_id = :user",
-                            user = session.get("user_id"))
+                            user = userID)
 
     rows0 = db.execute("SELECT SUM(cart.quantities * produtos.price) FROM cart inner join produtos on cart.product_id = produtos.id where user_id = :user", user = session.get("user_id"))
     totalcart = rows0[0]["SUM(cart.quantities * produtos.price)"]
