@@ -144,7 +144,7 @@ def register():
         session["user_id"] = new_user_id
 
         # Redirect user to home page
-        return redirect("/")
+        return redirect("/conta")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
