@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Conta
+{% endblock %}
+
+{% block main %}
+<main class="container p-5" >
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Conta</th>
+                <th>Morada</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container">
+                        <div class="row">
+                          <div class="col" style="text-align: right;">
+                            <b>Username: </b>
+                          </div>
+                          <div class="col" style="text-align: left;">
+                            {{username}}
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" style="text-align: right;">
+                                <b>Mail: </b>
+                              </div>
+                              <div class="col" style="text-align: left;">
+                                {{mail}}
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <form action="/conta" method="POST" enctype=multipart/form-data>
+                    {% if exists_adress %}
+                          {{nome}}<br>
+                          {{street}}, {{zipcode}} {{city}}<br>
+                          <button style="margin-top: 5px;" class="btn btn-sm btn-outline-secondary" type="submit" name="alterar_button" value="a">Alterar</button>
+                    {% else %}
+                            <a style="color: red;">Defina a morada</a><br>
+                            <div class="form-group">
+                                <input style="margin-top: 5px;" type="text" autofocus class="form-control"  placeholder="Nome completo" name="nome"><br>
+                                <input style="margin-top: 5px;" type="text" autofocus class="form-control"  placeholder="Cidade" name="city"><br>
+                                <input style="margin-top: 5px;" type="text" autofocus class="form-control"  placeholder="Rua e porta" name="street"><br>
+                                <input style="margin-top: 5px;" type="text" autofocus class="form-control"  placeholder="Código Postal" name="zip">
+                            <div>
+                            <button class="btn btn-primary my-2" type="submit" name="submit_button">Adicionar Morada</button>
+                    {% endif %}
+                </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+{% endblock %}

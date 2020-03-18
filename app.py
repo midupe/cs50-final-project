@@ -323,6 +323,63 @@ def checkout():
     
     return render_template("checkout.html")
 
+@app.route("/conta", methods=["GET", "POST"])
+@login_required
+def conta():
+    user_id = session.get("user_id")
+    rows = db.execute ("select username, mail from users where id = :user_id", user_id=user_id)
+    username = rows[0]["username"]
+    mail = rows[0]["mail"]
+    zipcode=''
+    city=''
+    street=''
+    nome=''
+    
+    # Check if has adress:
+    exists_adress = False
+    check_adress = db.execute("select * from morada where user_id=:user_id", user_id=user_id)
+    if len(check_adress) == 1 and check_adress[0]["user_id"] == user_id:
+        exists_adress = True
+        zipcode=check_adress[0]["zip"]
+        city=check_adress[0]["city"]
+        street=check_adress[0]["street"]
+        nome=check_adress[0]["nome"]
+
+
+    if request.method == "POST":
+        if request.form.get('alterar_button') == 'a':
+            db.execute("delete from morada where user_id = :user_id", user_id=user_id)
+            return redirect("/conta")
+
+        if not request.form.get("zip"):
+            return apology("deve indicar o código postal", 400)
+
+        elif not request.form.get("city"):
+            return apology("deve indicar a cidade ou localidade", 400)
+
+        elif not request.form.get("street"):
+            return apology("deve indicar o rua e porta", 400)
+
+        elif not request.form.get("nome"):
+            return apology("deve indicar o seu nome completo", 400)
+        
+        zipcode=request.form.get("zip")
+        city=request.form.get("city")
+        street=request.form.get("stret")
+        nome=request.form.get("nome")
+
+        db.execute("INSERT INTO morada (user_id, zip, city, street, nome) VALUES(:user_id, :zipcode, :city, :street, :nome)",
+                                 user_id=user_id,
+                                 zipcode=request.form.get("zip"),
+                                 city=request.form.get("city"),
+                                 street=request.form.get("street"),
+                                 nome=request.form.get("nome"))
+            
+        return redirect("/conta")
+
+
+    return render_template("conta.html", username=username, mail=mail, exists_adress=exists_adress, zipcode=zipcode, city=city, street=street, nome=nome)
+
 def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):
