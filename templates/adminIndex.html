@@ -5,12 +5,30 @@
 {% endblock %}
 
 {% block mainAdmin %}
+<div class="row" style="margin-bottom: 30px;">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Encomendas</h5>
+        <p class="card-text">
+          {% if encomendas == 0%}
+            Não tem encomendas por processar
+          {% else %}
+            Tem {{encomendas}} 
+            {% if encomendas == 1%} encomenda {% else %} encomendas {% endif %} por processar
+          {% endif %}
+          </p>
+        <a href="/admin/encomendas" class="btn btn-primary">Detalhes</a>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
     <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Produtos</h5>
-          <p class="card-text">Tem {{produtos}} produtos online disponíveis.</p>
+          <p class="card-text">Tem {{produtos}} {% if produtos == 1%} produto {% else %} produtos {% endif %} online disponíveis.</p>
           <a href="/admin/produtos" class="btn btn-primary">Detalhes</a>
         </div>
       </div>
@@ -19,7 +37,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Clientes</h5>
-          <p class="card-text">Tem {{users}} clientes. Parabéns!</p>
+          <p class="card-text">Tem {{users}} {% if users == 1%} cliente {% else %} clientes {% endif %}. Parabéns!</p>
           <a href="/admin/clientes" class="btn btn-primary">Detalhes</a>
         </div>
       </div>

@@ -162,7 +162,7 @@ def index():
                                  username=session.get("user_id"),
                                  product_id=productid)
 
-            return redirect("/")
+            return redirect("#catalogo")
 
     produtos = db.execute("select id, name, desc, price, image from produtos")
     
@@ -213,15 +213,20 @@ def admin_login_required(f):
 def admin():
     produto = db.execute("select count(id) from produtos")
     user = db.execute("select count(id) from users")
+    encomenda = db.execute("select count(distinct data) as encomendas from encomenda where estado='em_processo'")
     produtos=0
     users = 0
+    encomendas = 0
     if len(produto) ==1:
         produtos=produto[0]["count(id)"]
 
     if len (user)==1:
         users = user[0]["count(id)"]
     
-    return render_template("adminIndex.html", produtos=produtos, users = users)
+    if len (encomenda)==1:
+        encomendas = encomenda[0]["encomendas"]
+    
+    return render_template("adminIndex.html", produtos=produtos, users = users, encomendas=encomendas)
     
 @app.route("/admin/produtos", methods=["GET", "POST"])
 @admin_login_required
@@ -250,6 +255,32 @@ def adminEncomendasPorUser():
         return render_template("adminEncomendasUser.html", users=users, encomendas_datas=encomendas_datas, encomendas=encomendas)
 
     return render_template("adminEncomendasUser.html", users=users, encomendas_datas=encomendas_datas, encomendas=encomendas)
+
+@app.route("/admin/encomendas", methods=["GET", "POST"])
+@admin_login_required
+def adminEncomendas():
+    encomendas_datas = ''
+    encomendas = ''
+    if request.method == "POST":
+        if not request.form.get("id"):
+            return apology("Deve indicar o ID da encomenda", 400)
+
+        rows = db.execute("select data from encomenda where id = :id", id=request.form.get("id"))
+        datas = 0
+
+        if len(rows)==1:
+            datas=rows[0]["data"]
+
+        db.execute("update encomenda set estado = :estado WHERE data = :data and estado = 'em_processo'",
+                                 data=datas,
+                                 estado='processado')
+
+        return redirect("/admin/encomendas")
+    
+    encomendas_datas = db.execute("select data, id, user_id from encomenda where estado='em_processo' group by data")
+    encomendas = db.execute("select * from encomenda")
+
+    return render_template("encomendas.html", encomendas_datas=encomendas_datas, encomendas=encomendas)
 
 @app.route("/admin/inserirProdutos", methods=["GET", "POST"])
 @admin_login_required
