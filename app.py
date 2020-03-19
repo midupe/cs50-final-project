@@ -211,8 +211,16 @@ def admin_login_required(f):
 @app.route("/admin", methods=["GET", "POST"])
 @admin_login_required
 def admin():
-    produtos = db.execute("select id, name, desc, price, image from produtos")
-    users = db.execute("select id, username, mail from users")
+    produto = db.execute("select count(id) from produtos")
+    user = db.execute("select count(id) from users")
+    produtos=0
+    users = 0
+    if len(produto) ==1:
+        produtos=produto[0]["count(id)"]
+
+    if len (user)==1:
+        users = user[0]["count(id)"]
+    
     return render_template("adminIndex.html", produtos=produtos, users = users)
     
 @app.route("/admin/produtos", methods=["GET", "POST"])
