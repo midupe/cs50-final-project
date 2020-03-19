@@ -20,6 +20,7 @@ E-commerce website for an imaginary company who sells candles
 - register
 - login
 
+
 - admin panel
 - manage products (insert, edit and delete)
 - view clients (mail, username and adress)
