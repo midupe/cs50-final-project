@@ -1,5 +1,8 @@
 # Harvard CS50 2020 - Final Project
-Miguel Pereira
+[Miguel Pereira](https://www.linkedin.com/in/miguelduartepereira/)
+
+# Overview
+E-commerce website for an imaginary company who sells candles
 
 # Technology Used:
 - python
@@ -11,4 +14,8 @@ Miguel Pereira
 - css
 - bootstrap
 - fontawesome
-- pexels
+- pexels (images)
+
+# Features
+- admin panel:
+    - 
