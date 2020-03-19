@@ -17,24 +17,8 @@
             <tr>
                 <td>
                     <div class="container">
-                        <div class="row">
-                          <div class="col" style="text-align: right;">
-                            <b>Username: </b>
-                          </div>
-                          <div class="col" style="text-align: left;">
-                            {{username}}
-                          </div>
-                        </div>
-                        <div class="row">
-                            <div class="col" style="text-align: right;">
-                                <b>Mail: </b>
-                              </div>
-                              <div class="col" style="text-align: left;">
-                                {{mail}}
-                              </div>
-                            </div>
-                        </div>
-                    </div>
+                        <b>Username: </b>{{username}}<br>
+                        <b>Mail: </b>{{mail}}
                 </td>
                 <td>
                     <form action="/conta" method="POST" enctype=multipart/form-data>
@@ -57,5 +41,49 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-striped" style="margin-bottom: -1px; margin-top: -16px;">
+        <thead>
+            <tr>
+                <th>Encomendas</th>
+            </tr>
+        </thead>
+    </table>
+    {% for encomenda_data in encomendas_datas %}
+    <div class="accordion" id="accordion">
+        <div class="card">
+          <div class="card-header" id="heading_{{encomenda_data.id}}">
+            <h2 class="mb-0">
+              <button style="float: left;" class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_{{encomenda_data.id}}" aria-expanded="true" aria-controls="collapse_{{encomenda_data.id}}">
+                {{encomenda_data.data}}
+              </button>
+            </h2>
+          </div>
+          <div id="collapse_{{encomenda_data.id}}" class="collapse" aria-labelledby="heading_{{encomenda_data.id}}" data-parent="#accordion">
+            <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for encomenda in encomendas %}
+                            {% if encomenda.data ==  encomenda_data.data %}
+                            <tr>
+                                <td>{{encomenda.product_name}}</td>
+                                <td>{{encomenda.quantities}}</td>
+                                <td>{{encomenda.price}} €</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
 </main>
 {% endblock %}

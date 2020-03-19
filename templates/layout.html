@@ -18,6 +18,8 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/0e910a820f.js" crossorigin="anonymous"></script>
+
 
         <title>Velas de Cera: {% block title %}{% endblock %}</title>
 
@@ -41,7 +43,10 @@
                         {% if session.user_type == 'admin' %}
                             <li class="nav-item"><a class="nav-link" href="/admin" style="color: yellow;">Admin</a></li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="/cart">Carrinho</a></li>
+                            <li class="nav-item"><a class="btn btn-primary" href="/cart">
+                                <span style="color: white">
+                                    <i class="fas fa-shopping-cart"></i>
+                              </span> Carrinho</a></li>
                             <li class="nav-item"><a class="nav-link" href="/conta">Conta</a></li>
                         {% endif %}
                         <li class="nav-item"><a class="nav-link" href="/logout">Sair</a></li>

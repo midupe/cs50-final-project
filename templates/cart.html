@@ -42,7 +42,9 @@
             </tr>
         </tfoot>
     </table>
+    {% if totalcart != 0 %}
     <a href="/cart/checkout" style="float: right; margin-right: 20px;" class="btn btn-primary my-2">Comprar</a>
+    {% endif %}
 </form>
 </main>
 {% endblock %}

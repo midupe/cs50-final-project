@@ -10,3 +10,5 @@ Miguel Pereira
 - html
 - css
 - bootstrap
+- fontawesome
+- pexels

@@ -5,8 +5,49 @@
 {% endblock %}
 
 {% block main %}
-<main class="container p-5" >
-    <form action="/checkout" method="POST" enctype=multipart/form-data>
+<main class="container p-5">
+    <h2>Resumo</h2>
+    <form action="/cart/checkout" method="POST" enctype=multipart/form-data>
+        <div class="card"  style="text-align: right;" >
+            <h5 class="card-header"  style="text-align: left;" >Método de envio</h5>
+            <div class="card-body">
+              <h5 class="card-title"  style="text-align: left;" >Cobrança</h5>
+              <p class="card-text"  style="text-align: left;" >Pagamento no ato da entrega.<br>Entrega até 48h.</p>
+            </div>
+        </div>
+        <div class="card"  style="text-align: right;" >
+            <h5 class="card-header"  style="text-align: left;" >Produtos</h5>
+            <div class="card-body">
+                <table class="table table-striped" style="text-align: left;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nome</th>
+                            <th style="text-align: center;">Quantidade</th>
+                            <th style="text-align: right;">Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for produto in produtos %}
+                        <tr>
+                            <td><img src="/static/image/uploads/{{ produto.image }}" style="object-fit:scale-down; height: 50px;"></td>
+                            <td>{{ produto.name }}</td>
+                            <td style="text-align: center;">{{ produto.quantities }}
+                            </td>
+                            <td style="text-align: right;">{{ produto.price }} €</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3"></th>
+                            <th style="text-align: right;">Total: {{ totalcart }} €</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" name="submit_button" style="margin-top: 20px; float: right;">Finalizar compra</button>
     </form>
 </main>
 {% endblock %}

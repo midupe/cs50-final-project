@@ -256,10 +256,11 @@ def adminApagarProdutos():
             return apology("Deve indicar o ID", 400)
 
         # Apagar imagem
-        rows = db.execute("select * from produtos where id = :id", id=request.form.get("id"))
+        rows = db.execute("select image from produtos where id = :id", id=request.form.get("id"))
         if len(rows) == 1:
             image = rows[0]["image"]
-            os.remove("static/image/uploads/%s" % (image))
+            if os.path.exists(image):
+                os.remove("static/image/uploads/%s" % (image))
         
         # Apagar da base de dados
         db.execute("DELETE FROM produtos WHERE id = :id",
@@ -270,6 +271,26 @@ def adminApagarProdutos():
     produtos = db.execute("select id, name, desc, price, image from produtos")
 
     return render_template("apagarProdutos.html", produtos=produtos)
+    
+@app.route("/admin/editarPrecoProdutos", methods=["GET", "POST"])
+@admin_login_required
+def adminEditarPrecoProdutos():
+    if request.method == "POST":
+        if not request.form.get("preco"):
+            return apology("Deve indicar o preço", 400)
+
+        if not request.form.get("id"):
+            return apology("Deve indicar o id", 400)
+
+        db.execute("update produtos set price = :preco WHERE id = :id",
+                                 id=request.form.get("id"),
+                                 preco=float(request.form.get("preco")))
+        
+        return redirect("/admin/editarPrecoProdutos")
+    
+    produtos = db.execute("select id, name, desc, price, image from produtos")
+
+    return render_template("editarPrecoProdutos.html", produtos=produtos)
 
 @app.route("/contacto")
 def contacto():
@@ -314,14 +335,55 @@ def cart():
 
     rows0 = db.execute("SELECT SUM(cart.quantities * produtos.price) FROM cart inner join produtos on cart.product_id = produtos.id where user_id = :user", user = session.get("user_id"))
     totalcart = rows0[0]["SUM(cart.quantities * produtos.price)"]
+    if totalcart is None:
+        totalcart=0
 
     return render_template("cart.html", produtos=produtos, totalcart=totalcart)
 
 @app.route("/cart/checkout", methods=["GET", "POST"])
 @login_required
 def checkout():
-    
-    return render_template("checkout.html")
+    # Check if exists morada
+    rows = db.execute("select * from morada where user_id = :userid", userid = session.get("user_id"))
+    if len(rows) != 1:
+        return redirect("/conta")
+
+    produtos = db.execute("Select cart.quantities, produtos.name, produtos.price, produtos.image, produtos.id from cart inner join produtos on cart.product_id = produtos.id where user_id = :user",
+                            user = session.get("user_id"))
+    rows0 = db.execute("SELECT SUM(cart.quantities * produtos.price) FROM cart inner join produtos on cart.product_id = produtos.id where user_id = :user", user = session.get("user_id"))
+    totalcart = rows0[0]["SUM(cart.quantities * produtos.price)"]
+    if totalcart is None:
+        totalcart=0
+
+    # Finalizar compra
+    if request.method == "POST":
+        for i in range(len(produtos)):
+            product_id = produtos[i]["id"]
+            price = produtos[i]["price"]
+            product_name = produtos[i]["name"]
+            quantities = produtos[i]["quantities"]
+
+            new_encomenda = db.execute("Insert into encomenda (user_id, product_id, quantities, price, product_name) values (:user_id, :product_id, :quantities, :price, :product_name) ", 
+                        user_id=session.get("user_id"),
+                        product_id=product_id,
+                        quantities=quantities,
+                        price=price,
+                        product_name=product_name)
+
+            if not new_encomenda:
+                return apology("Erro ao processar compra", 400)
+
+            # Apagar carrinho
+            db.execute("delete from cart where user_id = :user_id", user_id=session.get("user_id"))
+        
+        return redirect("/cart/checkout/thanks")
+
+    return render_template("checkout.html", produtos=produtos, totalcart=totalcart)
+
+@app.route("/cart/checkout/thanks", methods=["GET", "POST"])
+@login_required
+def thanks():
+    return render_template("thanks.html")
 
 @app.route("/conta", methods=["GET", "POST"])
 @login_required
@@ -334,7 +396,12 @@ def conta():
     city=''
     street=''
     nome=''
-    
+
+
+
+    encomendas_datas = db.execute("select data, id from encomenda where user_id = :user_id group by data", user_id=user_id)
+    encomendas = db.execute("select * from encomenda where user_id = :user_id", user_id=user_id)
+
     # Check if has adress:
     exists_adress = False
     check_adress = db.execute("select * from morada where user_id=:user_id", user_id=user_id)
@@ -378,7 +445,7 @@ def conta():
         return redirect("/conta")
 
 
-    return render_template("conta.html", username=username, mail=mail, exists_adress=exists_adress, zipcode=zipcode, city=city, street=street, nome=nome)
+    return render_template("conta.html", username=username, mail=mail, exists_adress=exists_adress, zipcode=zipcode, city=city, street=street, nome=nome, encomendas=encomendas, encomendas_datas=encomendas_datas)
 
 def errorhandler(e):
     """Handle error"""

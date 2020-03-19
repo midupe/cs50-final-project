@@ -13,8 +13,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav mr-auto mt-2">
-                <li class="nav-item"><a class="nav-link" href="/admin/inserirProdutos">Inserir Produtos</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/apagarProdutos">Apagar Produtos</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Produtos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="/admin/editarPrecoProdutos">Editar Preços</a>
+                      <a class="dropdown-item" href="/admin/inserirProdutos">Inserir</a>
+                      <a class="dropdown-item" href="/admin/apagarProdutos">Apagar</a>
+                    </div>
+                  </li>
             </ul>
     </div>
 </nav>
