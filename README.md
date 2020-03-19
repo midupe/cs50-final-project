@@ -19,7 +19,20 @@ E-commerce website for an imaginary company who sells candles
 # Features
 - register
 - login
-- admin panel
-    - manage products (insert, edit and delete)
+- logout
+- about us
+- contact
+- admin panel (login required and admin account)
+    - manage products (add, edit and delete)
     - view clients (mail, username and adress)
     - manage orders
+- homepage
+    - products show automatically from inserted products from admin panel
+    - add products to cart (login required)
+- account (login required)
+    - manage adress
+    - view orders
+- cart (login required)
+    - manage quantities of added  products
+    - choose shipping method
+    - order
