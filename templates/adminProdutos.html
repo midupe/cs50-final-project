@@ -5,14 +5,12 @@
 {% endblock %}
 
 {% block mainAdmin %}
-<form action="/admin/editarPrecoProdutos" method="POST">
     <table class="table table-striped">
         <thead>
             <h2>
-                Editar Preços Produtos
+                Produtos
             </h2>
             <tr>
-                <th>Ação</th>
                 <th>#</th>
                 <th>Nome</th>
                 <th>Descrição</th>
@@ -21,27 +19,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    <button class="btn btn-success" type="submit">Editar</button>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input type="text" autofocus class="form-control"  placeholder="ID" name="id">
-                    <div>
-                </td>
-                <td>-</td>       
-                <td>-</td>
-                <td>
-                    <div class="form-group">
-                        <input type="text" autofocus class="form-control"  placeholder="Preço" name="preco">
-                    <div>
-                </td>
-                <td>-</td>
-            </tr>
         {% for produto in produtos %}
             <tr>
-                <td>-</td>
                 <td>{{ produto.id }}</td>
                 <td>{{ produto.name }}</td>
                 <td>{{ produto.desc }}</td>
@@ -53,5 +32,4 @@
         {% endfor %}
         </tbody>
     </table>
-</form>
 {% endblock %}

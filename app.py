@@ -214,6 +214,34 @@ def admin():
     produtos = db.execute("select id, name, desc, price, image from produtos")
     users = db.execute("select id, username, mail from users")
     return render_template("adminIndex.html", produtos=produtos, users = users)
+    
+@app.route("/admin/produtos", methods=["GET", "POST"])
+@admin_login_required
+def adminProdutos():
+    produtos = db.execute("select id, name, desc, price, image from produtos")
+    return render_template("adminProdutos.html", produtos=produtos)
+
+@app.route("/admin/clientes", methods=["GET", "POST"])
+@admin_login_required
+def adminClientes():
+    users = db.execute("select id, username, mail, zip, city, street, nome from users left join morada on user_id=id")
+    return render_template("adminClientes.html", users=users)
+
+@app.route("/admin/encomendasPorCliente", methods=["GET", "POST"])
+@admin_login_required
+def adminEncomendasPorUser():
+    users = db.execute("select id, username, mail, nome from users left join morada on user_id=users.id order by users.id")
+    encomendas_datas = ''
+    encomendas = ''
+    if request.method == "POST":
+        if not request.form.get("id"):
+            return apology("Deve indicar o ID", 400)
+        
+        encomendas_datas = db.execute("select data, id from encomenda where user_id = :user_id group by data", user_id=int(request.form.get("id")))
+        encomendas = db.execute("select * from encomenda where user_id = :user_id", user_id=int(request.form.get("id")))
+        return render_template("adminEncomendasUser.html", users=users, encomendas_datas=encomendas_datas, encomendas=encomendas)
+
+    return render_template("adminEncomendasUser.html", users=users, encomendas_datas=encomendas_datas, encomendas=encomendas)
 
 @app.route("/admin/inserirProdutos", methods=["GET", "POST"])
 @admin_login_required

@@ -1,0 +1,45 @@
+{% extends "admin.html" %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block mainAdmin %}
+<table class="table table-striped">
+    <thead>
+        <h2>
+            Clientes
+        </h2>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Mail</th>
+            <th>Nome</th>
+            <th>Morada</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for cliente in users %}
+        <tr>
+            <td>{{ cliente.id }}</td>
+            <td>{{ cliente.username }}</td>
+            <td>{{ cliente.mail }}</td>
+            <td>
+                {% if cliente.nome == None %}
+                    -
+                {% else %}
+                    {{ cliente.nome}}
+                {% endif %}
+            </td>
+            <td>
+                {% if cliente.street == None %}
+                -
+                {% else %}
+                {{cliente.street}}, {{cliente.zipcode}} {{cliente.city}}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
