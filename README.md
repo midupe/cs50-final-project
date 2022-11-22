@@ -1,10 +1,11 @@
 # Harvard CS50 2020 - Final Project
-[Miguel Pereira](https://www.linkedin.com/in/miguelduartepereira/)
+## Ecommerce - Velas de cera
+[![Preview](https://i.imgur.com/hzTXvqh.gif)](https://www.youtube.com/watch?v=B8jsE8xYdnA)
 
-# Overview
+## Overview
 E-commerce website for an imaginary company who sells candles
 
-# Technology Used:
+## Technology Used:
 - python
 - flask
 - jinja
@@ -16,7 +17,7 @@ E-commerce website for an imaginary company who sells candles
 - fontawesome
 - pexels (images)
 
-# Features
+## Features
 - register
 - login
 - logout
